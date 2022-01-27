@@ -23,6 +23,7 @@ import {
   ARGENT_WALLET_DETECTOR_ABI,
   ARGENT_WALLET_DETECTOR_MAINNET_ADDRESS,
 } from '../constants/abis/argent-wallet-detector'
+import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
 import { AddressZero } from '@ethersproject/constants'
 import BAR_ABI from '../constants/abis/bar.json'
 import BENTOBOX_ABI from '../constants/abis/bentobox.json'
@@ -65,6 +66,7 @@ import { MASTER_CHEF, MASTER_CHEF_V2 } from './../constants/addresses'
 
 const UNI_FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
 const HOTPOT_FARMING_ADDRESS = '0x36C55e146aF82DbD06E0bFccF0AdFbedE02EC7d7'
+const WETH = '0xc778417e063141139fce010982780140aa0cd5ab'
 
 export function useEIP2612Contract(tokenAddress?: string): Contract | null {
   return useContract(tokenAddress, EIP_2612_ABI, false)
@@ -254,6 +256,16 @@ export const useChainId = () => {
   } else {
     return { chainId: 4 }
   }
+}
+
+export function useMulticallContract(): Contract | null {
+  const { chainId } = useChainId()
+  return useContract(chainId && MULTICALL_NETWORKS[chainId], MULTICALL_ABI, false)
+}
+
+export function useWETHContract() {
+  const { chainId } = useChainId()
+  return useContract(chainId && WETH, ERC20_ABI, false)
 }
 
 export function useFarmingContractWeb3() {

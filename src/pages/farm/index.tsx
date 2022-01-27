@@ -137,32 +137,32 @@ export default function Farm(): JSX.Element {
           endDateInMilis: endDate,
         }
       })
-      let x = [
-        {
-          pid: 0,
-          network: 4,
-          startDate: 0,
-          endDate: 0,
-          isActive: true,
-          singleFarm: true,
-          standEarning: true,
-          lpTokenAddress: { '4': '0xAab270C629D885713602BC62B1c15D6e0e51F5A9', decimals: 18 },
-          farmAddress: { '4': '0x36C55e146aF82DbD06E0bFccF0AdFbedE02EC7d7' },
-          pair: {
-            id: '0xAab270C629D885713602BC62B1c15D6e0e51F5A9',
-            token: { symbol: 'HOTPOT', id: '0xAab270C629D885713602BC62B1c15D6e0e51F5A9', decimals: 18, earning: false },
-            quoteToken: {
-              symbol: 'HOTPOT',
-              id: '0xAab270C629D885713602BC62B1c15D6e0e51F5A9',
-              decimals: 18,
-              earning: false,
-            },
-          },
-          type: '1',
-          duration: 0,
-          endDateInMilis: 0,
-        },
-      ]
+      // let x = [
+      //   {
+      //     pid: 0,
+      //     network: 4,
+      //     startDate: 0,
+      //     endDate: 0,
+      //     isActive: true,
+      //     singleFarm: true,
+      //     standEarning: true,
+      //     lpTokenAddress: { '4': '0xAab270C629D885713602BC62B1c15D6e0e51F5A9', decimals: 18 },
+      //     farmAddress: { '4': '0x36C55e146aF82DbD06E0bFccF0AdFbedE02EC7d7' },
+      //     pair: {
+      //       id: '0xAab270C629D885713602BC62B1c15D6e0e51F5A9',
+      //       token: { symbol: 'HOTPOT', id: '0xAab270C629D885713602BC62B1c15D6e0e51F5A9', decimals: 18, earning: false },
+      //       quoteToken: {
+      //         symbol: 'HOTPOT',
+      //         id: '0xAab270C629D885713602BC62B1c15D6e0e51F5A9',
+      //         decimals: 18,
+      //         earning: false,
+      //       },
+      //     },
+      //     type: '1',
+      //     duration: 0,
+      //     endDateInMilis: 0,
+      //   },
+      // ]
       setListFarm(listData)
     }
 
@@ -208,7 +208,7 @@ export default function Farm(): JSX.Element {
   }
 
   return (
-    <Container id="farm-page" className="grid h-full grid-cols-4 py-4 mx-auto md:py-8 lg:py-12 gap-9" maxWidth="7xl">
+    <Container id="farm-page" className="grid h-full mx-auto gap-9 max-w-full w-full" maxWidth="7xl">
       <Head>
         <title>Farm | TokenStand</title>
         <meta name="description" content="Farm TOKENSTAND" />

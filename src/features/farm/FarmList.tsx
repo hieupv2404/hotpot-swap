@@ -119,7 +119,9 @@ const FarmList = ({ farms, currentFarmType, changeFarmType }) => {
 
         <GroupItemFarm>
           {farms.map((farm) => {
+            // console.log('farm: ', farm)
             if (farm.endDate === 0 && farm.type === currentFarmType) {
+              // console.log('farm1: ', farm)
               return <FarmListItem key={farm.pid} farm={farm} farmLength={farms.length} />
             } else {
               return ''
@@ -129,6 +131,7 @@ const FarmList = ({ farms, currentFarmType, changeFarmType }) => {
         <GroupItemFarm>
           {farms.map((farm) => {
             if (farm.endDate !== 0 && farm.type === currentFarmType) {
+              // console.log('farm2: ', farm)
               return <FarmListItem key={farm.pid} farm={farm} farmLength={farms.length} />
             } else {
               return ''

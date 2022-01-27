@@ -24,7 +24,7 @@ import { useCurrencyDisconnect } from '../../hooks/TokensDisconnect'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import { useETHBalances } from '../../state/wallet/hooks'
+import { useETHBalances, useWETHBalances } from '../../state/wallet/hooks'
 import { convertToNumber } from '../../utils/convertNumber'
 import { handleAdvancedDecimal, toFixed } from '../../utils/decimalAdjust'
 import Deposit, { hotpotardData } from './deposit'
@@ -38,6 +38,7 @@ import { ZERO_ADDRESS } from '../../constants/addresses'
 
 export const ALLOWANCE_AMOUNT = 1000000000000000
 export const GAS_LIMIT = 9000000
+export const LP_WETH_HOTPOT = '0x38739ff518614fd2cd36f5b3a6e561faf7791dd1'
 
 export const optionGasLimit = {
   gasLimit: GAS_LIMIT,
@@ -62,7 +63,7 @@ const BLOCK_PER_YEAR_ENUM = {
   [ChainId.BSC_TESTNET]: 10512000,
 }
 
-const FarmListItem = ({ farm, farmLength }) => {
+const FarmListItem = ({ key, farm, farmLength }) => {
   const { i18n } = useLingui()
   const { account } = useActiveWeb3React()
   const { chainId } = useChainId()
@@ -106,8 +107,23 @@ const FarmListItem = ({ farm, farmLength }) => {
   const tokenContract = useTokenContractWeb3(farm.pair.token.id)
   const quoteTokenContract = useTokenContractWeb3(farm.pair.quoteToken.id)
   const hotpotTokenContract = useTokenContractWeb3(HOTPOT_TOKEN[`${chainId}`])
-  const balanceNative = useETHBalances([farm.lpTokenAddress[`${chainId}`]])[
-    farm.lpTokenAddress[`${chainId}`]
+  const lpTokenAddress = farm.lpTokenAddress[`${chainId}`]
+  // export const LP_WETH_HOTPOT = '0x38739ff518614fd2cd36f5b3a6e561faf7791dd1'
+  // farm.lpTokenAddress[`${chainId}`] = '0x38739ff518614fd2cd36f5b3a6e561faf7791dd1'
+  // cach 1
+  // const balanceNative = useWETHBalances([farm.lpTokenAddress[`${chainId}`]])[
+  //   farm.lpTokenAddress[`${chainId}`]
+  // ]?.toExact()
+  // cach 2
+  // console.log('LP_WETH_HOTPOT: ', LP_WETH_HOTPOT)
+  // const balanceNative = useWETHBalances([LP_WETH_HOTPOT])[LP_WETH_HOTPOT]?.toExact()
+  // cach 3
+  // const balanceNative = useWETHBalances([lpTokenAddress])[
+  //   lpTokenAddress
+  // ]?.toExact()
+  //cach 4
+  const balanceNative = useWETHBalances(['0x38739FF518614Fd2CD36F5b3a6E561FAF7791dd1'])[
+    '0x38739FF518614Fd2CD36F5b3a6E561FAF7791dd1'
   ]?.toExact()
 
   const handleOpenDeposit = () => {
@@ -123,6 +139,10 @@ const FarmListItem = ({ farm, farmLength }) => {
   }
 
   const fetchData = async () => {
+    // console.log('1: ', farm.type === FarmTypeEnum.LP)
+    // console.log('2: ', !balanceNative)
+    // console.log('3: ', farm.pair.token.id === NATIVE_TOKEN_ADDRESS || farm.pair.quoteToken.id === NATIVE_TOKEN_ADDRESS)
+
     if (
       farm.type === FarmTypeEnum.LP &&
       !balanceNative &&
@@ -227,8 +247,6 @@ const FarmListItem = ({ farm, farmLength }) => {
         .toNumber()
     }
     const tokenPriceUSD = 0
-    console.log('totalStakedForFarmToken: ', totalStakedForFarmToken)
-    console.log('userStake?.amount: ', userStake?.amount)
     const totalStakeForFarmToken =
       farm.type === FarmTypeEnum.TOKEN &&
       new BigNumber(convertToNumber(totalStakedForFarmToken, farm.pair.token.decimals)).toNumber()
@@ -254,12 +272,11 @@ const FarmListItem = ({ farm, farmLength }) => {
       totalStake:
         farm.type === FarmTypeEnum.TOKEN
           ? totalStakeForFarmToken
-          : new BigNumber(convertToNumber(totalStake, farm.lpTokenAddress.decimals)).times(lpPrice).toNumber() || 0,
+          : new BigNumber(convertToNumber(totalStake, farm.lpTokenAddress.decimals)).toNumber() || 0,
       userStake:
         farm.type === FarmTypeEnum.TOKEN
           ? yourStakeForFarmToken
-          : new BigNumber(convertToNumber(userStake?.amount, farm.lpTokenAddress.decimals)).times(lpPrice).toNumber() ||
-            0,
+          : new BigNumber(convertToNumber(userStake?.amount, farm.lpTokenAddress.decimals)).toNumber() || 0,
       rawUserStake: userStake ? formatEther(userStake?.amount) : 0,
       lpPrice,
       token0Reward,
@@ -339,7 +356,6 @@ const FarmListItem = ({ farm, farmLength }) => {
           farm.active ? farmingContractV2.farmInfo(farm.pid) : farmingContract.farmInfo(farm.pid),
           farm.active ? farmingContractV2.totalAllocPoint() : farmingContract.totalAllocPoint(),
         ])
-
       if (
         token == HOTPOT_TOKEN[chainId] &&
         farm.pair.token.id != HOTPOT_TOKEN[chainId] &&
@@ -349,7 +365,7 @@ const FarmListItem = ({ farm, farmLength }) => {
           hotpotTokenContract.options.address &&
             hotpotTokenContract.methods.balanceOf(farm?.lpAddressHotpotVsQuote[`${chainId}`]).call(),
           quoteTokenContract.options.address && farm.pair.quoteToken.id === NATIVE_TOKEN_ADDRESS
-            ? useETHBalances([farm?.lpAddressHotpotVsQuote[`${chainId}`]])[
+            ? useWETHBalances([farm?.lpAddressHotpotVsQuote[`${chainId}`]])[
                 farm?.lpAddressHotpotVsQuote[`${chainId}`]
               ]?.toExact()
             : quoteTokenContract.methods.balanceOf(farm?.lpAddressHotpotVsQuote[`${chainId}`]).call(),
@@ -368,19 +384,16 @@ const FarmListItem = ({ farm, farmLength }) => {
       const lpTokenRatio = new BigNumber(lpTokenBalanceSR ? lpTokenBalanceSR : 0).div(
         lpTotalSupply ? new BigNumber(lpTotalSupply) : 0
       )
-      const lpTotalInQuoteToken = new BigNumber(convertToNumber(quoteTokenBalanceLP, farm.pair.quoteToken.decimals))
+      const lpTotalInQuoteToken = new BigNumber(quoteTokenBalanceLP)
         // .div(new BigNumber(10).pow(18))
         .times(new BigNumber(2))
         .times(lpTokenRatio)
       const tokenAmount = new BigNumber(tokenBalanceLP ? tokenBalanceLP : 0)
         // .div(new BigNumber(10).pow(farm.pair.token.decimals))
         .times(lpTokenRatio)
-      const quoteTokenAmount = new BigNumber(
-        quoteTokenBalanceLP ? convertToNumber(quoteTokenBalanceLP, farm.pair.quoteToken.decimals) : 0
-      )
+      const quoteTokenAmount = new BigNumber(quoteTokenBalanceLP ? quoteTokenBalanceLP : 0)
         // .div(new BigNumber(10).pow(farm.pair.quoteToken.decimals))
         .times(lpTokenRatio)
-
       const tokenPriceVsQuote = tokenAmount.toNumber()
         ? new BigNumber(quoteTokenAmount).div(tokenAmount)
         : new BigNumber(0)
@@ -429,7 +442,7 @@ const FarmListItem = ({ farm, farmLength }) => {
     setIsOpenWithDraw(false)
     const estimate = farmingContractV2.estimateGas.withdraw
     const method = farmingContractV2.withdraw
-    const args = [farm.pid, new BigNumber(val).times(new BigNumber(10).pow(18)).toString()]
+    const args = [farm.pid, parseEther(val.toString())]
 
     await estimate(...args)
       .then((estimatedGasLimit) =>

@@ -7,7 +7,7 @@ import ModalHeader from '../../components/ModalHeader'
 
 import Modal from '../../components/Modal'
 
-import { Currency } from '@sushiswap/sdk'
+import { Currency } from '@hotpot-swap/sdk'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { isMobile } from 'react-device-detect'
 import BigNumber from 'bignumber.js'
@@ -347,7 +347,7 @@ export default function WithDrawModal({
               firstValue === undefined ||
               new BigNumber(firstValue).gt(new BigNumber(userStake))
             }
-            className={`btn-primary1 ${
+            className={`bg-gradient-to-r from-blue to-pink btn-primary1 ${
               firstValue === '' ||
               firstValue === null ||
               firstValue === undefined ||

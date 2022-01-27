@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, JSBI, NATIVE, Token } from '@hotpot-swap/core-sdk'
+import { Currency, CurrencyAmount, JSBI, NATIVE, Token, Ether } from '@hotpot-swap/core-sdk'
 import { useMultipleContractSingleData, useSingleContractMultipleData } from '../multicall/hooks'
 
 import ERC20_ABI from '../../constants/abis/erc20.json'
@@ -7,7 +7,7 @@ import { isAddress } from '../../functions/validate'
 import { useActiveWeb3React } from '../../services/web3'
 import { useAllTokens } from '../../hooks/Tokens'
 import { useMemo } from 'react'
-import { useMulticall2Contract } from '../../hooks/useContract'
+import { useMulticallContract, useChainId, useWETHContract } from '../../hooks/useContract'
 import { TokenBalancesMap } from './types'
 
 /**
@@ -16,9 +16,8 @@ import { TokenBalancesMap } from './types'
 export function useETHBalances(uncheckedAddresses?: (string | undefined)[]): {
   [address: string]: CurrencyAmount<Currency> | undefined
 } {
-  const { chainId } = useActiveWeb3React()
-  const multicallContract = useMulticall2Contract()
-
+  const { chainId } = useChainId()
+  const multicallContract = useMulticallContract()
   const addresses: string[] = useMemo(
     () =>
       uncheckedAddresses
@@ -41,7 +40,41 @@ export function useETHBalances(uncheckedAddresses?: (string | undefined)[]): {
       addresses.reduce<{ [address: string]: CurrencyAmount<Currency> }>((memo, address, i) => {
         const value = results?.[i]?.result?.[0]
         if (value && chainId)
-          memo[address] = CurrencyAmount.fromRawAmount(NATIVE[chainId], JSBI.BigInt(value.toString()))
+          memo[address] = CurrencyAmount.fromRawAmount(Ether.onChain(chainId), JSBI.BigInt(value.toString()))
+        return memo
+      }, {}),
+    [addresses, chainId, results]
+  )
+}
+
+export function useWETHBalances(uncheckedAddresses?: (string | undefined)[]): {
+  [address: string]: CurrencyAmount<Currency> | undefined
+} {
+  const { chainId } = useChainId()
+  const multicallContract = useWETHContract()
+  const addresses: string[] = useMemo(
+    () =>
+      uncheckedAddresses
+        ? uncheckedAddresses
+            .map(isAddress)
+            .filter((a): a is string => a !== false)
+            .sort()
+        : [],
+    [uncheckedAddresses]
+  )
+
+  const results = useSingleContractMultipleData(
+    multicallContract,
+    'balanceOf',
+    addresses.map((address) => [address])
+  )
+
+  return useMemo(
+    () =>
+      addresses.reduce<{ [address: string]: CurrencyAmount<Currency> }>((memo, address, i) => {
+        const value = results?.[i]?.result?.[0]
+        if (value && chainId)
+          memo[address] = CurrencyAmount.fromRawAmount(Ether.onChain(chainId), JSBI.BigInt(value.toString()))
         return memo
       }, {}),
     [addresses, chainId, results]
