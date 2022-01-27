@@ -6,7 +6,8 @@
     "node": "14.17.3" 
   },
   "scripts": {
-    "postinstall": "npx next telemetry disable",
+    "postinstall": "npm run prestart:prod",
+    "start:prod": "node dist/src/main.js",
     "analyze": "ANALYZE=true yarn build && serve .next -n",
     "dev": "next dev",
     "inspect": "NODE_OPTIONS='--inspect' next dev",
