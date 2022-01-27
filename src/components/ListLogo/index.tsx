@@ -13,7 +13,5 @@ export default function ListLogo({
   style?: React.CSSProperties
   alt?: string
 }) {
-  const srcs: string[] = useHttpLocations(logoURI)
-
-  return <Logo alt={alt} width={size} height={size} srcs={srcs} style={style} />
+  return <Logo alt={alt} width={size} height={size} style={style} />
 }

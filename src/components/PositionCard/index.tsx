@@ -17,6 +17,7 @@ import { useLingui } from '@lingui/react'
 import { useRouter } from 'next/router'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { useTotalSupply } from '../../hooks/useTotalSupply'
+import DoubleCurrencyLogoV2 from '../DoubleLogoV2'
 
 interface PositionCardProps {
   pair: Pair
@@ -64,7 +65,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false, border }: Pos
             <div className="text-lg">Your Position</div>
             <div className="flex flex-col md:flex-row md:justify-between">
               <div className="flex items-center w-auto space-x-4">
-                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={40} />
+                <DoubleCurrencyLogoV2 currency0={pair.token0} currency1={pair.token1} size={40} />
                 <div className="text-2xl font-semibold">
                   {currency0.symbol}/{currency1.symbol}
                 </div>
