@@ -10,7 +10,7 @@
     "start:prod": "node dist/src/main.js",
     "prestart:prod": "npm run build",
     "analyze": "ANALYZE=true yarn build && serve .next -n",
-    "dev": "next dev",
+    "dev": "node dist/src/main.js",
     "inspect": "NODE_OPTIONS='--inspect' next dev",
     "build": "yarn dev && next build",
     "start": "next start",
