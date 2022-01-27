@@ -6,14 +6,11 @@
     "node": "14.17.3" 
   },
   "scripts": {
-    "postinstall": "npm run prestart:prod",
-    "start:prod": "node dist/src/main.js",
-    "prestart:prod": "npm run build",
     "analyze": "ANALYZE=true yarn build && serve .next -n",
-    "dev": "node dist/src/main.js",
+    "dev": "next dev",
     "inspect": "NODE_OPTIONS='--inspect' next dev",
-    "build": "yarn dev && next build",
-    "start": "next start",
+    "build": "next build",
+    "start": "next start -p $PORT",
     "lingui": "lingui extract --clean --overwrite && lingui compile",
     "lokalise": "lokalise2 --config lokalise.yaml file download --format po --unzip-to . --original-filenames=false",
     "circular": "madge --circular src --extensions ts,tsx,js,jsx",
