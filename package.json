@@ -7,7 +7,7 @@
   },
   "scripts": {
     "analyze": "ANALYZE=true yarn build && serve .next -n",
-    "dev": "yarn dev",
+    
     "inspect": "NODE_OPTIONS='--inspect' next dev",
     "build": "yarn dev",
     "start": "next start",
