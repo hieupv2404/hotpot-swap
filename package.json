@@ -8,6 +8,7 @@
   "scripts": {
     "postinstall": "npm run prestart:prod",
     "start:prod": "node dist/src/main.js",
+    "prestart:prod": "npm run build",
     "analyze": "ANALYZE=true yarn build && serve .next -n",
     "dev": "next dev",
     "inspect": "NODE_OPTIONS='--inspect' next dev",
