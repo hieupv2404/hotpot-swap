@@ -4,6 +4,7 @@
 
 .DS_Store
 .env
+.gitCode
 
 npm-debug.log*
 yarn-debug.log*
