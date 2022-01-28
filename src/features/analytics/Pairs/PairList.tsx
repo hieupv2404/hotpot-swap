@@ -6,6 +6,7 @@ import ColoredNumber from '../../../features/analytics/ColoredNumber'
 import DoubleCurrencyLogo from '../../../components/DoubleLogo'
 import { useCurrency } from '../../../hooks/Tokens'
 import { aprToApy } from '../../../functions/convert/apyApr'
+import DoubleCurrencyLogoV2 from 'src/components/DoubleLogoV2'
 
 interface PairListProps {
   pairs: {
@@ -47,7 +48,7 @@ function PairListName({ pair }: PairListNameProps): JSX.Element {
   return (
     <>
       <div className="flex items-center">
-        <DoubleCurrencyLogo
+        <DoubleCurrencyLogoV2
           className="-space-x-3"
           logoClassName="rounded-full"
           currency0={token0}

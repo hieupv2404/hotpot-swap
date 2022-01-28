@@ -2,6 +2,7 @@ import { Currency } from '@hotpot-swap/core-sdk'
 import CurrencyLogo from '../CurrencyLogo'
 import React from 'react'
 import { classNames } from '../../functions'
+import { FarmTypeEnum } from '../../constants/farm-type'
 
 interface DoubleCurrencyLogoProps {
   margin?: boolean
@@ -10,6 +11,7 @@ interface DoubleCurrencyLogoProps {
   currency1?: Currency
   className?: string
   logoClassName?: string
+  farmType?: FarmTypeEnum
 }
 
 export default function DoubleCurrencyLogoV2({

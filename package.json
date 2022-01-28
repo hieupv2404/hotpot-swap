@@ -7,9 +7,9 @@
   },
   "scripts": {
     "analyze": "ANALYZE=true yarn build && serve .next -n",
-    "dev": "next dev",
+    "dev": "next",
     "inspect": "NODE_OPTIONS='--inspect' next dev",
-    "build": "next build",
+    "build": "yarn lingui && next build",
     "start": "next start -p $PORT",
     "lingui": "lingui extract --clean --overwrite && lingui compile",
     "lokalise": "lokalise2 --config lokalise.yaml file download --format po --unzip-to . --original-filenames=false",
@@ -21,7 +21,8 @@
     "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:ci": "jest --ci --collectCoverage"
+    "test:ci": "jest --ci --collectCoverage",
+    "heroku-postbuild": "npm run build"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

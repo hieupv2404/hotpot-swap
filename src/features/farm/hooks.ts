@@ -1,10 +1,10 @@
-import { ChainId, CurrencyAmount, JSBI, MASTERCHEF_ADDRESS } from '@sushiswap/sdk'
+import { ChainId, CurrencyAmount, JSBI, MASTERCHEF_ADDRESS } from '@hotpot-swap/sdk'
 import { Chef, PairType } from './enum'
 import { NEVER_RELOAD, useSingleCallResult, useSingleContractMultipleData } from '../../state/multicall/hooks'
-import { useMasterChefContract, useMasterChefV2Contract, useMiniChefContract, useMiniChefV2Contract } from '../../hooks'
+import { useMasterChefContract, useMasterChefV2Contract, useMiniChefContract } from '../../hooks'
 
 import { Contract } from '@ethersproject/contracts'
-import { MASTERCHEF_V2_ADDRESS, MINICHEF_ADDRESS, SUSHI } from '../../constants/addresses'
+import { MASTER_CHEF_V2, MINICHEF_ADDRESS, HOTPOT } from '../../constants/addresses'
 import { Zero } from '@ethersproject/constants'
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
 import { useCallback, useMemo } from 'react'
@@ -14,7 +14,7 @@ import { concat } from 'lodash'
 export function useChefContract(chef: Chef) {
   const masterChefContract = useMasterChefContract()
   const masterChefV2Contract = useMasterChefV2Contract()
-  const miniChefContract = useMiniChefV2Contract()
+  const miniChefContract = useMiniChefContract()
   const contracts = useMemo(
     () => ({
       [Chef.MASTERCHEF]: masterChefContract,
@@ -34,7 +34,7 @@ const CHEFS = {
 export function useChefContracts(chefs: Chef[]) {
   const masterChefContract = useMasterChefContract()
   const masterChefV2Contract = useMasterChefV2Contract()
-  const miniChefContract = useMiniChefV2Contract()
+  const miniChefContract = useMiniChefContract()
   const contracts = useMemo(
     () => ({
       [Chef.MASTERCHEF]: masterChefContract,
@@ -85,7 +85,7 @@ export function usePendingSushi(farm) {
 
   const amount = value ? JSBI.BigInt(value.toString()) : undefined
 
-  return amount ? CurrencyAmount.fromRawAmount(SUSHI[chainId], amount) : undefined
+  return amount ? CurrencyAmount.fromRawAmount(HOTPOT[chainId], amount) : undefined
 }
 
 export function usePendingToken(farm, contract) {
@@ -133,7 +133,7 @@ export function useChefPositions(contract?: Contract | null, rewarder?: Contract
   const getChef = useCallback(() => {
     if (MASTERCHEF_ADDRESS[chainId] === contract.address) {
       return Chef.MASTERCHEF
-    } else if (MASTERCHEF_V2_ADDRESS[chainId] === contract.address) {
+    } else if (MASTER_CHEF_V2[chainId] === contract.address) {
       return Chef.MASTERCHEF_V2
     } else if (MINICHEF_ADDRESS[chainId] === contract.address) {
       return Chef.MINICHEF

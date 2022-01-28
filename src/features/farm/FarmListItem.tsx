@@ -158,11 +158,8 @@ const FarmListItem = ({ key, farm, farmLength }) => {
       apyTokenHotpot,
       token0RewardHex,
       token1RewardHex,
-      nativePrice,
-      lpPair,
       lpTotalSupply,
       hotpotPrice,
-      totalLiquidityTokens,
     ] = await Promise.all([
       lpTokenContract.methods.balanceOf(farm.active ? MASTER_CHEF_V2[chainId] : MASTER_CHEF[chainId]).call() || 0,
       farm.active
@@ -183,10 +180,8 @@ const FarmListItem = ({ key, farm, farmLength }) => {
           ? farmingContractV2.pendingGift(farm.pid, account)
           : farmingContract.pendingGift(farm.pid, account))) ||
         0,
-      0,
       lpTokenContract.methods.totalSupply().call() || 0,
       0,
-      farm.type === FarmTypeEnum.TOKEN ? 0 : lpTokenContract.methods.getReserves().call(),
     ])
 
     const checkClaim = 0
@@ -201,18 +196,9 @@ const FarmListItem = ({ key, farm, farmLength }) => {
 
     const totalStakedForFarmToken = farm.active ? farmingContractV2 && (await farmingContractV2.totalHotpotStaked()) : 0
 
-    const pair = lpPair?.data?.pair
-    const poolTotalUSD =
-      new BigNumber(pair?.token0?.derivedETH)
-        .times(convertToNumber(totalLiquidityTokens?._reserve0, farm.pair.token.decimals))
-        .times(nativePrice)
-        .toNumber() +
-      new BigNumber(pair?.token1?.derivedETH)
-        .times(convertToNumber(totalLiquidityTokens?._reserve1, farm.pair.quoteToken.decimals))
-        .times(nativePrice)
-        .toNumber()
-    const tokenPrice = new BigNumber(pair?.token0?.derivedETH).times(nativePrice) || 0
-    const quoteTokenPrice: number = new BigNumber(pair?.token1?.derivedETH).times(nativePrice).toNumber() || 0
+    const poolTotalUSD = 0
+    const tokenPrice = 0
+    const quoteTokenPrice = 0
     const lpPrice =
       new BigNumber(poolTotalUSD).div(convertToNumber(lpTotalSupply, farm.lpTokenAddress.decimals)).toNumber() || 0
 

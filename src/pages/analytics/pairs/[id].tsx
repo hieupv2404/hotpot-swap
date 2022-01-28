@@ -18,6 +18,7 @@ import { DuplicateIcon } from '@heroicons/react/outline'
 import { CheckIcon } from '@heroicons/react/solid'
 import { getExplorerLink } from '../../../functions/explorer'
 import { useActiveWeb3React } from '../../../services/web3'
+import DoubleCurrencyLogoV2 from 'src/components/DoubleLogoV2'
 
 export default function Pair() {
   const router = useRouter()
@@ -117,7 +118,7 @@ export default function Pair() {
             {'<'} Go Back
           </button>
           <div className="flex items-center space-x-4">
-            <DoubleCurrencyLogo
+            <DoubleCurrencyLogoV2
               className="-space-x-3"
               logoClassName="rounded-full"
               currency0={currency0}

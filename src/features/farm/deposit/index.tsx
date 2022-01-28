@@ -94,8 +94,7 @@ export default function Deposit({
 
   const [approval, approveCallback] = useApproveCallback(
     currencyLp && tryParseAmount(toFixed(decimalAdjust('floor', countValue, -18)).toString(), currencyLp),
-    farm.active ? MASTER_CHEF_V2[chainId] : MASTER_CHEF[chainId],
-    farm
+    farm.active ? MASTER_CHEF_V2[chainId] : MASTER_CHEF[chainId]
   )
 
   const roundToTwoDp = (number) => Math.round(number * 100) / 100

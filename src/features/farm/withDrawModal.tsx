@@ -15,6 +15,7 @@ import { hotpotardData } from './deposit'
 import { useCurrency } from '../../hooks/Tokens'
 import NewTooltip from '../../components/NewTooltip'
 import { FarmTypeEnum } from '../../constants/farm-type'
+import DoubleCurrencyLogoV2 from 'src/components/DoubleLogoV2'
 
 const WalletName = styled.div`
   width: initial;
@@ -288,14 +289,14 @@ export default function WithDrawModal({
         </div>
         <BlockPoolToken className="flex justify-between space-between items-center mx-auto">
           <div className="coin-logo-box flex items-center">
-            <div className="logo" style={{ marginLeft: '1rem', marginRight: '0.5rem' }}>
+            <div className="logo">
               {isMobile ? (
-                <DoubleCurrencyLogo farmType={farmType} currency0={currency0} currency1={currency1} size={25} />
+                <DoubleCurrencyLogoV2 farmType={farmType} currency0={currency0} currency1={currency1} size={25} />
               ) : (
-                <DoubleCurrencyLogo farmType={farmType} currency0={currency0} currency1={currency1} size={35} />
+                <DoubleCurrencyLogoV2 farmType={farmType} currency0={currency0} currency1={currency1} size={35} />
               )}
             </div>
-            <div className="title space-y-2">
+            <div className="title space-y-2" style={{ marginLeft: '1rem' }}>
               <TitleInfo>{farmType === FarmTypeEnum.TOKEN ? 'Token' : 'Pool Token'}</TitleInfo>
               <TitleStyle>
                 {farmType === FarmTypeEnum.TOKEN

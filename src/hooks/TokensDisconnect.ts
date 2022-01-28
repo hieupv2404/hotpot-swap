@@ -21,6 +21,7 @@ function useTokensFromMap(tokenMap: TokenAddressMap, includeUserAdded: boolean):
     const mapWithoutUrls = Object.keys(tokenMap[chainId]).reduce<{
       [address: string]: Token
     }>((newMap, address) => {
+      // @ts-ignore
       newMap[address] = tokenMap[chainId][address].token
       return newMap
     }, {})
@@ -31,6 +32,7 @@ function useTokensFromMap(tokenMap: TokenAddressMap, includeUserAdded: boolean):
           // reduce into all ALL_TOKENS filtered by the current chain
           .reduce<{ [address: string]: Token }>(
             (tokenMap, token) => {
+              // @ts-ignore
               tokenMap[token.address] = token
               return tokenMap
             },

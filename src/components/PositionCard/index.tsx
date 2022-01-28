@@ -163,7 +163,7 @@ export default function FullPositionCard({ pair, border, stakedBalance }: Positi
         onClick={() => setShowMore(!showMore)}
       >
         <div className="flex items-center space-x-4">
-          <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={40} />
+          <DoubleCurrencyLogoV2 currency0={currency0} currency1={currency1} size={40} />
           <div className="text-xl font-semibold">
             {!currency0 || !currency1 ? <Dots>{i18n._(t`Loading`)}</Dots> : `${currency0.symbol}/${currency1.symbol}`}
           </div>

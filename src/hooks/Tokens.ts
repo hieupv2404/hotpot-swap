@@ -12,6 +12,8 @@ import { useActiveWeb3React } from '../services/web3'
 import { useCombinedActiveList } from '../state/lists/hooks'
 import { useMemo } from 'react'
 import { useUserAddedTokens } from '../state/user/hooks'
+import { NATIVE_TOKEN_ADDRESS } from '../constants/addresses'
+import { useChainId } from './useContract'
 
 // reduce token map into standard address <-> Token mapping, optionally include user added tokens
 function useTokensFromMap(tokenMap: TokenAddressMap, includeUserAdded: boolean): { [address: string]: Token } {
@@ -178,20 +180,94 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
   ])
 }
 
-export function useCurrency(currencyId: string | undefined): Currency | null | undefined {
-  const { chainId } = useActiveWeb3React()
+export function useTokenChain(tokenAddress?: string, chainId?: any): Token | undefined | null {
+  const tokens = useAllTokens()
+  const address = isAddress(tokenAddress)
+  const tokenContract = useTokenContract(address ? address : undefined, false)
+  const tokenContractBytes32 = useBytes32TokenContract(address ? address : undefined, false)
+  const token: Token | undefined = address ? tokens[address] : undefined
 
-  const isETH = currencyId?.toUpperCase() === 'ETH'
+  const tokenName = useSingleCallResult(token ? undefined : tokenContract, 'name', undefined, NEVER_RELOAD)
+  const tokenNameBytes32 = useSingleCallResult(
+    token ? undefined : tokenContractBytes32,
+    'name',
+    undefined,
+    NEVER_RELOAD
+  )
+  const symbol = useSingleCallResult(token ? undefined : tokenContract, 'symbol', undefined, NEVER_RELOAD)
+  const symbolBytes32 = useSingleCallResult(token ? undefined : tokenContractBytes32, 'symbol', undefined, NEVER_RELOAD)
+  const decimals = useSingleCallResult(token ? undefined : tokenContract, 'decimals', undefined, NEVER_RELOAD)
+
+  return useMemo(() => {
+    if (token) return token
+    if (!chainId || !address) return undefined
+    if (decimals.loading || symbol.loading || tokenName.loading) return null
+    if (decimals.result) {
+      return new Token(
+        chainId,
+        address,
+        decimals.result[0],
+        parseStringOrBytes32(symbol.result?.[0], symbolBytes32.result?.[0], 'UNKNOWN'),
+        parseStringOrBytes32(tokenName.result?.[0], tokenNameBytes32.result?.[0], 'Unknown Token')
+      )
+    }
+    return undefined
+  }, [
+    address,
+    chainId,
+    decimals.loading,
+    decimals.result,
+    symbol.loading,
+    symbol.result,
+    symbolBytes32.result,
+    token,
+    tokenName.loading,
+    tokenName.result,
+    tokenNameBytes32.result,
+  ])
+}
+
+export function useCurrency(currencyId: string | undefined): Currency | Token | undefined {
+  const { chainId } = useChainId()
+
+  const isETH = currencyId?.toUpperCase() === 'ETH' || currencyId === NATIVE_TOKEN_ADDRESS
 
   const isDual = [ChainId.CELO].includes(chainId)
 
   const useNative = isETH && !isDual
 
   if (isETH && isDual) {
-    currencyId = WNATIVE_ADDRESS[chainId]
+    currencyId = WNATIVE[chainId].address
   }
 
   const token = useToken(useNative ? undefined : currencyId)
+
+  // const extendedEther = useMemo(() => (chainId ? ExtendedEther.onChain(chainId) : undefined), [chainId])
+  // const weth = chainId ? WETH9_EXTENDED[chainId] : undefined
+
+  const native = useMemo(() => (chainId ? NATIVE[chainId] : undefined), [chainId])
+
+  const wnative = chainId ? WNATIVE[chainId] : undefined
+
+  if (wnative?.address?.toLowerCase() === currencyId?.toLowerCase()) return wnative
+
+  return useNative ? native : token
+}
+export function useCurrencyChain(currencyId: string | undefined, chainId: any): Currency | null | undefined {
+  const isETH = currencyId?.toUpperCase() === 'ETH' || currencyId === NATIVE_TOKEN_ADDRESS
+
+  const isDual = [ChainId.CELO].includes(chainId)
+
+  const useNative = isETH && !isDual
+
+  if (isETH && isDual) {
+    currencyId = WNATIVE[chainId].address
+  }
+
+  const token = useTokenChain(useNative ? undefined : currencyId, chainId)
+
+  // const extendedEther = useMemo(() => (chainId ? ExtendedEther.onChain(chainId) : undefined), [chainId])
+  // const weth = chainId ? WETH9_EXTENDED[chainId] : undefined
 
   const native = useMemo(() => (chainId ? NATIVE[chainId] : undefined), [chainId])
 

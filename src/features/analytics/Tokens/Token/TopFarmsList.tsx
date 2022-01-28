@@ -3,6 +3,7 @@ import DoubleCurrencyLogo from '../../../../components/DoubleLogo'
 import { formatPercent } from '../../../../functions'
 import { useCurrency } from '../../../../hooks/Tokens'
 import Table from '../../../../components/Table'
+import DoubleCurrencyLogoV2 from 'src/components/DoubleLogoV2'
 
 interface TopFarmsListProps {
   farms: {
@@ -42,7 +43,7 @@ function FarmListname({ pair }: FarmListNameProps): JSX.Element {
 
   return (
     <div className="flex items-center">
-      <DoubleCurrencyLogo currency0={token0} currency1={token1} size={28} />
+      <DoubleCurrencyLogoV2 currency0={token0} currency1={token1} size={28} />
       <div className="ml-3 font-bold text-high-emphesis">
         {pair.token0.symbol}-{pair.token1.symbol}
       </div>

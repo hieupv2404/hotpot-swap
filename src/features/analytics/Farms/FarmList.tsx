@@ -6,6 +6,7 @@ import DoubleCurrencyLogo from '../../../components/DoubleLogo'
 import { useCurrency } from '../../../hooks/Tokens'
 import Image from 'next/image'
 import ColoredNumber from '../ColoredNumber'
+import DoubleCurrencyLogoV2 from 'src/components/DoubleLogoV2'
 
 interface FarmListProps {
   pools: {
@@ -42,7 +43,7 @@ function FarmListName({ pair }: FarmListNameProps): JSX.Element {
   return (
     <>
       <div className="flex items-center">
-        <DoubleCurrencyLogo
+        <DoubleCurrencyLogoV2
           className="-space-x-3"
           logoClassName="rounded-full"
           currency0={token0}
