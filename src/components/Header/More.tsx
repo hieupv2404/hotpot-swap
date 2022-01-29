@@ -11,40 +11,22 @@ import NavLink from '../NavLink'
 
 const items = (i18n: I18n) => [
   {
-    name: i18n._(t`Docs`),
-    description: i18n._(t`Documentation for users of Hotpot.`),
-    href: 'https://docs.sushi.com',
-    external: true,
-  },
-  {
-    name: i18n._(t`Dev`),
-    description: i18n._(t`Documentation for developers of Hotpot.`),
-    href: 'https://dev.sushi.com',
-    external: true,
-  },
-  {
     name: i18n._(t`Open Source`),
     description: i18n._(t`Hotpot is a supporter of Open Source.`),
-    href: 'https://github.com/sushiswap',
+    href: 'https://github.com/Hotpot-Swap',
     external: true,
   },
   {
-    name: i18n._(t`Tools`),
-    description: i18n._(t`Tools to optimize your workflow.`),
-    href: '/tools',
-    external: false,
-  },
-  {
-    name: i18n._(t`Discord`),
-    description: i18n._(t`Join the community on Discord.`),
-    href: 'https://discord.gg/NVPXN4e',
+    name: i18n._(t`Telegram`),
+    description: i18n._(t`Join the community on Telegram.`),
+    href: 'https://t.me/+zRZqpqbIP1Q1YWRl',
     external: true,
   },
   {
-    name: i18n._(t`Vesting`),
-    description: i18n._(t`Weekly unlocks from the vesting period.`),
-    href: '/vesting',
-    external: false,
+    name: i18n._(t`Facebook`),
+    description: i18n._(t`Join the community on Facebook.`),
+    href: 'https://www.facebook.com/groups/621306875604240',
+    external: true,
   },
 ]
 
