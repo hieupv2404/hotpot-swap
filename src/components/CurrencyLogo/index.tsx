@@ -39,25 +39,9 @@ function getCurrencySymbol(currency) {
 
 export function getCurrencyLogoUrls(currency) {
   const urls = []
-
-  if (currency.chainId in BLOCKCHAIN) {
-    urls.push(
-      `https://raw.githubusercontent.com/sushiswap/logos/main/network/${BLOCKCHAIN[currency.chainId]}/${
-        currency.address
-      }.jpg`
-    )
-    urls.push(
-      `https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/${BLOCKCHAIN[currency.chainId]}/assets/${
-        currency.address
-      }/logo.png`
-    )
-    urls.push(
-      `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${BLOCKCHAIN[currency.chainId]}/assets/${
-        currency.address
-      }/logo.png`
-    )
-  }
-
+  urls.push(
+    `https://raw.githubusercontent.com/Hotpot-Swap/hotpot-swap-interface/master/public/images/icons/${currency.symbol.toLowerCase()}.png`
+  )
   return urls
 }
 
