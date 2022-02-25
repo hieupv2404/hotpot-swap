@@ -392,7 +392,7 @@ export default function Swap() {
   return (
     <Container id="swap-page" className="py-4 md:py-8 lg:py-12">
       <Head>
-        <title>{i18n._(t`HotpotSwap`)} | Hotpot</title>
+        <title>Swap | Hotpot</title>
         <meta
           key="description"
           name="description"
