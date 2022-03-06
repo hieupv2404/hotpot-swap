@@ -86,18 +86,6 @@ export function AdvancedSwapDetails({ trade, allowedSlippage }: AdvancedSwapDeta
 
       <RowBetween>
         <RowFixed>
-          <div className="text-sm text-secondary">{i18n._(t`xHOTPOT Fee`)}</div>
-          <QuestionHelper
-            text={i18n._(t`A portion of each trade (0.05%) goes to xHOTPOT holders as a protocol incentive.`)}
-          />
-        </RowFixed>
-        <div className="text-sm font-bold text-high-emphesis">
-          {realizedLPFee ? `${realizedLPFee.divide(6).toSignificant(4)} ${realizedLPFee.currency.symbol}` : '-'}
-        </div>
-      </RowBetween>
-
-      <RowBetween>
-        <RowFixed>
           <div className="text-sm text-secondary">{i18n._(t`Slippage tolerance`)}</div>
           <QuestionHelper text={i18n._(t`Slippage tolerance...`)} />
         </RowFixed>

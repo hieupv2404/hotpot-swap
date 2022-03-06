@@ -2,12 +2,12 @@
   "name": "sushiswap-interface",
   "version": "1.0.0",
   "private": true,
-  "engines": { 
-    "node": "14.17.3" 
+  "engines": {
+    "node": "14.17.3"
   },
   "scripts": {
     "analyze": "ANALYZE=true yarn build && serve .next -n",
-    "start:prod":"next start -p $PORT",
+    "start:prod": "next start -p $PORT",
     "dev": "next dev",
     "inspect": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
@@ -187,7 +187,7 @@
     "moment": "^2.29.1",
     "react-tabs": "^3.2.3",
     "react-tooltip": "^4.2.21",
-    "next":"^12.0.1",
+    "next": "^12.0.1",
     "next-pwa": "^5.4.0"
   }
 }
